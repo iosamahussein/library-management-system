@@ -1,13 +1,13 @@
 package com.example.librarymanagementsystem.service;
 
 import com.example.librarymanagementsystem.entity.Book;
-import com.example.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.example.librarymanagementsystem.repository.BookRepository;
+import com.example.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.example.librarymanagementsystem.exception.EntityAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -19,11 +19,14 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Optional<Book> getBookById(Long id) {
-        return Optional.of(bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id)));
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
     }
 
     public Book addBook(Book book) {
+        if (bookRepository.existsByIsbn(book.getIsbn())) {
+            throw new EntityAlreadyExistsException("Book with ISBN " + book.getIsbn() + " already exists");
+        }
         return bookRepository.save(book);
     }
 

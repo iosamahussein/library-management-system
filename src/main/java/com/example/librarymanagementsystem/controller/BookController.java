@@ -1,14 +1,12 @@
 package com.example.librarymanagementsystem.controller;
 
 import com.example.librarymanagementsystem.entity.Book;
-import com.example.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.example.librarymanagementsystem.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -18,25 +16,23 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
-        Optional<Book> book = bookService.getBookById(id);
-        return ResponseEntity.ok(book);
+    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.getBookById(id));
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
-        return bookService.addBook(book);
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        return ResponseEntity.ok(bookService.addBook(book));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book bookDetails) {
-        Book updatedBook = bookService.updateBook(id, bookDetails);
-        return ResponseEntity.ok(updatedBook);
+        return ResponseEntity.ok(bookService.updateBook(id, bookDetails));
     }
 
     @DeleteMapping("/{id}")

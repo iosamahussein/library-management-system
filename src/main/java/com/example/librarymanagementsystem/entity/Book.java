@@ -1,6 +1,7 @@
 package com.example.librarymanagementsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Book {
@@ -8,11 +9,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title is mandatory")
     private String title;
-    private String author;
-    private int publicationYear;
-    private String isbn;
 
+    @NotBlank(message = "Author is mandatory")
+    private String author;
+
+    @Min(value = 1440, message = "Publication year must be no earlier than 1440")
+    private int publicationYear;
+
+    @NotBlank(message = "ISBN is mandatory")
+    @Pattern(regexp = "^(97(8|9))?\\d{9}(\\d|X)$", message = "Invalid ISBN")
+    private String isbn;
     public Book() {
     }
 

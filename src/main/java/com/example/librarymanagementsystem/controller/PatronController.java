@@ -22,13 +22,12 @@ public class PatronController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Patron> getPatronById(@PathVariable Long id) {
-        Patron patron = patronService.getPatronById(id).orElseThrow(() -> new RuntimeException("Patron not found"));
-        return ResponseEntity.ok(patron);
+        return ResponseEntity.ok(patronService.getPatronById(id));
     }
 
     @PostMapping
-    public Patron addPatron(@RequestBody Patron patron) {
-        return patronService.addPatron(patron);
+    public ResponseEntity<Patron> addPatron(@RequestBody Patron patron) {
+        return ResponseEntity.ok(patronService.addPatron(patron));
     }
 
     @PutMapping("/{id}")

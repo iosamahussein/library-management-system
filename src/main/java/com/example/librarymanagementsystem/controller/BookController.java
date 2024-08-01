@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -21,8 +22,13 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getBookById(id));
+    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
+        Optional<Book> book = bookService.getBookById(id);
+        if (book.isEmpty()) {
+            // return message if book is not found
+            return ResponseEntity.notFound().build(); 
+        }
+        return ResponseEntity.ok(book);
     }
 
     @PostMapping

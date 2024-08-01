@@ -9,6 +9,7 @@ import com.example.librarymanagementsystem.repository.BorrowingRecordRepository;
 import com.example.librarymanagementsystem.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public class BorrowingRecordService {
     @Autowired
     private PatronRepository patronRepository;
     
-
+    @Transactional
     public BorrowingRecord borrowBook(Long bookId, Long patronId) {
         BorrowingRecord record = new BorrowingRecord();
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException ("Book not found"));
@@ -34,7 +35,7 @@ public class BorrowingRecordService {
         record.setBorrowingDate(LocalDate.now());
         return borrowingRecordRepository.save(record);
     }
-
+    @Transactional
     public BorrowingRecord returnBook(Long bookId, Long patronId) {
         BorrowingRecord record = borrowingRecordRepository.findByBookIdAndPatronIdAndReturnDateIsNull(bookId, patronId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing record not found"));

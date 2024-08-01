@@ -6,6 +6,7 @@ import com.example.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.example.librarymanagementsystem.repository.PatronRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 @Service
 public class PatronService {
@@ -27,7 +28,7 @@ public class PatronService {
     public Patron addPatron(Patron patron) {
         
         if (patronRepository.existsByEmail(patron.getEmail())) {
-             throw new EntityAlreadyExistsException ("Patron with email " + patron.getEmail() + " already exists");
+            throw new EntityAlreadyExistsException ("Patron with email " + patron.getEmail() + " already exists");
         }
         return patronRepository.save(patron);
     }
